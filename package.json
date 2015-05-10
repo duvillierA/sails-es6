@@ -25,6 +25,9 @@
     "sails-disk": "~0.10.0",
     "sails-hook-babel": "^5.0.1"
   },
+  "devDependencies": {
+    "sails-hook-autoreload": "^0.11.5"
+  },
   "scripts": {
     "start": "node app.js",
     "debug": "node debug app.js"
@@ -36,7 +39,8 @@
   },
   "author": "aduvillier",
   "license": "",
-  "devDependencies": {
-    "sails-hook-autoreload": "^0.11.5"
+  "engines": {
+    "node": ">=1.12.0",
+    "iojs": ">=2.0.1"
   }
 }
