@@ -1,3 +1,3 @@
-# sails.0.11
+# sails-es6
 
-a [Sails](http://sailsjs.org) application
+Sails ES6 bootstrap application
