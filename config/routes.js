@@ -36,8 +36,6 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'get /user': 'UserController.find',
-
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

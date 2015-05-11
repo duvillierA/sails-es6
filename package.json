@@ -26,11 +26,18 @@
     "sails-hook-babel": "^5.0.1"
   },
   "devDependencies": {
-    "sails-hook-autoreload": "^0.11.5"
+    "chai": "^2.3.0",
+    "istanbul": "^0.3.13",
+    "mocha": "~2.2.4",
+    "sails-hook-autoreload": "^0.11.5",
+    "sails-memory": "^0.10.3"
   },
   "scripts": {
     "start": "node app.js",
-    "debug": "node debug app.js"
+    "debug": "node debug app.js",
+    "test": "mocha --bail --timeout 2000 --compilers js:babel/register 'test/bootstrap.test.js' 'test/unit/**/*.test.*'",
+    "test-quiet": "mocha --bail --reporter progress --timeout 2000 --compilers js:babel/register 'test/bootstrap.test.js' 'test/unit/**/*.test.*'",
+    "coverage": "istanbul cover _mocha -- --timeout 5000 --reporter dot --compilers js:babel/register 'test/unit/**/*.test.*'"
   },
   "main": "app.js",
   "repository": {
