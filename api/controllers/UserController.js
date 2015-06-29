@@ -9,20 +9,20 @@
 
 export function find (req, res) {
   res.send(200);
-};
+}
 
 export function findOne (req, res) {
   res.send(200);
-};
+}
 
 export function create (req, res) {
   res.send(200);
-};
+}
 
 export function update (req, res) {
   res.send(200);
-};
+}
 
 export function destroy (req, res) {
   res.send(200);
-};
+}
