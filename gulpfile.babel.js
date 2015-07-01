@@ -52,7 +52,11 @@ gulp.task('styles', () => {
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe($.minifyCss())
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(DIST.styles));
+    .pipe(gulp.dest(DIST.styles))
+    .pipe($.size({
+      title: 'styles',
+      showFiles: true
+    }));
 });
 
 gulp.task('watch', () => {
