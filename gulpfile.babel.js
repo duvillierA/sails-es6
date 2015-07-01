@@ -1,33 +1,65 @@
+'use strict';
+
 import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
+import del from 'del';
 
 const $ = gulpLoadPlugins();
-const task = gulp.task;
-
-const paths = {
+const DIST = {
+  scripts: '.tmp/public/scripts',
+  styles: '.tmp/public/styles',
+  images: '.tmp/public/images',
+  fonts: '.tmp/public/fonts'
+};
+const SRC = {
   api: 'api/**/*.js',
   tasks: 'task/**/*.js',
   config: 'config/**/*.js',
   test: 'test/**/*.test.js',
   scripts: 'assets/scripts/**/*.js',
-  styles: 'assets/styles/**/*.scss',
+  styles: 'assets/styles/*.scss',
   images: 'assets/images/**/*.{png,jpg}',
   fonts: 'assets/fonts/*'
 };
+const AUTOPREFIXER_BROWSERS = [
+  'ie >= 9',
+  'ie_mob >= 10',
+  'last 2 Firefox versions',
+  'last 2 Chrome versions',
+  'last 5 Safari versions',
+  'last 5 Opera versions',
+  'ios >= 7',
+  'android >= 4.4',
+  'bb >= 10'
+];
+
+// Clean output directory
+gulp.task('clean', () => del(['.tmp/public'], {dot: true}));
 
 gulp.task('lint', () => {
-    return gulp.src([paths.tasks, paths.config, paths.api, paths.scripts])
-        .pipe($.eslint())
-        .pipe($.eslint.format())
-        .pipe($.eslint.failOnError());
+  return gulp.src([SRC.tasks, SRC.config, SRC.api, SRC.scripts])
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.eslint.failOnError());
+});
+
+gulp.task('styles', () => {
+  return gulp.src(SRC.styles)
+    .pipe($.sourcemaps.init())
+    .pipe($.sass({
+       precision: 10
+    }).on('error', $.sass.logError))
+    .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe($.minifyCss())
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest(DIST.styles));
 });
 
 gulp.task('watch', () => {
   // Watch files for changes & reload
-  gulp.watch([paths.scripts], ['lint']);
+  gulp.watch([SRC.styles], ['styles']);
 });
 
-gulp.task('default', ['lint'], () => {
+gulp.task('default', ['clean', 'lint', 'styles', 'watch'], () => {
   // This will only run if the lint task is successful...
-  // gulp.task('watch');
 });
