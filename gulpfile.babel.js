@@ -20,7 +20,7 @@ const SRC = {
   scripts: 'assets/scripts/**/*.js',
   styles: 'assets/styles/*.scss',
   images: 'assets/images/**/*.{png,jpg}',
-  fonts: 'assets/fonts/*'
+  fonts: 'assets/fonts/**'
 };
 const AUTOPREFIXER_BROWSERS = [
   'ie >= 9',
@@ -44,6 +44,18 @@ gulp.task('lint', () => {
     .pipe($.eslint.failOnError());
 });
 
+gulp.task('fonts', () => {
+  return gulp.src([SRC.fonts])
+    .pipe(gulp.dest(DIST.fonts))
+    .pipe($.size({title: 'fonts'}));
+});
+
+gulp.task('images', () => {
+  return gulp.src([SRC.fonts])
+    .pipe(gulp.dest(DIST.fonts))
+    .pipe($.size({title: 'images'}));
+});
+
 gulp.task('styles', () => {
   return gulp.src(SRC.styles)
     .pipe($.changed(DIST.styles, {extension: '.css'}))
@@ -53,22 +65,21 @@ gulp.task('styles', () => {
     .pipe($.minifyCss())
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest(DIST.styles))
-    .pipe($.size({
-      title: 'styles',
-      showFiles: true
-    }));
+    .pipe($.size({title: 'styles', showFiles: true}));
 });
 
 gulp.task('watch', () => {
   // Watch files for changes & reload
   gulp.watch([SRC.styles], ['styles']);
+  gulp.watch([SRC.fonts], ['fonts']);
+  gulp.watch([SRC.images], ['images']);
 });
 
 gulp.task('default', cb => {
   // This will only run if the lint task is successful...
   runSequence(
     'clean',
-    ['styles'],
+    ['styles', 'images', 'fonts'],
     ['lint', 'watch'],
     cb
   );
