@@ -19,8 +19,8 @@ const SRC = {
   test: 'test/**/*.test.js',
   scripts: 'assets/scripts/**/*.js',
   styles: 'assets/styles/*.scss',
-  images: 'assets/images/**/*.{png,jpg}',
-  fonts: 'assets/fonts/**'
+  images: 'assets/images/**/*',
+  fonts: 'assets/fonts/**/*'
 };
 const AUTOPREFIXER_BROWSERS = [
   'ie >= 9',
@@ -51,8 +51,12 @@ gulp.task('fonts', () => {
 });
 
 gulp.task('images', () => {
-  return gulp.src([SRC.fonts])
-    .pipe(gulp.dest(DIST.fonts))
+  return gulp.src([SRC.images])
+    .pipe($.cache($.imagemin({
+        progressive: true,
+        interlaced: true
+      })))
+    .pipe(gulp.dest(DIST.images))
     .pipe($.size({title: 'images'}));
 });
 
@@ -76,12 +80,10 @@ gulp.task('watch', () => {
 });
 
 gulp.task('default', cb => {
-  // This will only run if the lint task is successful...
   runSequence(
     'clean',
     ['styles', 'images', 'fonts'],
     ['lint', 'watch'],
     cb
   );
-
 });
