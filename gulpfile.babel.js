@@ -6,6 +6,7 @@ import del from 'del';
 import runSequence from 'run-sequence';
 import gulpWwebpack from 'webpack-stream';
 import webpack from 'webpack';
+import {modules as webpackModulesConfig} from './webpack.config.js';
 import named from 'vinyl-named';
 
 const $ = gulpLoadPlugins();
@@ -77,16 +78,9 @@ gulp.task('styles', () => {
 });
 
 gulp.task('modules', function () {
-  let commonPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
   return gulp.src(SRC.modules)
     .pipe(named())
-    .pipe(gulpWwebpack({
-      module: {
-        loaders: [{ test: /\.js$/, loader: 'babel-loader' }]
-      },
-      plugins: [commonPlugin]
-    }, webpack))
-    .pipe($.uglify({preserveComments: 'some'}))
+    .pipe(gulpWwebpack(webpackModulesConfig, webpack))
     .pipe(gulp.dest(DIST.scripts))
     .pipe($.size({title: 'modules', showFiles: true}));
 });

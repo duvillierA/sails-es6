@@ -5,7 +5,8 @@
      "curly": 0,
      "strict": 0,
      "comma-spacing": 0,
-     "no-underscore-dangle": 0
+     "no-underscore-dangle": 0,
+     "no-unused-vars": 0
   },
   "env": {
     "browser": true,

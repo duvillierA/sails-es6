@@ -1,9 +1,14 @@
 'use strict';
 
-import helpers from '../helpers/main.js';
-helpers();
+import $ from 'jquery';
+import * as math from 'helpers/math.js';
+
 let main = function () {
-  console.log('main');
+  console.log(
+    'main',
+    `2π = ${math.sum(math.pi, math.pi)}`,
+    $('body')
+  );
 };
 
 main();

@@ -1,8 +1,6 @@
 'use strict';
 
-import helpers from '../helpers/main.js';
-
-helpers();
+import $ from 'jquery';
 
 let home = function () {
   console.log('home');

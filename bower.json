@@ -1,0 +1,7 @@
+{
+  "name": "sails-es6-gulp",
+  "private": true,
+  "dependencies": {
+    "jquery": "1.11.3"
+  }
+}
