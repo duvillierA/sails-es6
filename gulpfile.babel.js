@@ -4,6 +4,9 @@ import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import del from 'del';
 import runSequence from 'run-sequence';
+import gulpWwebpack from 'webpack-stream';
+import webpack from 'webpack';
+import named from 'vinyl-named';
 
 const $ = gulpLoadPlugins();
 const DIST = {
@@ -18,6 +21,7 @@ const SRC = {
   config: 'config/**/*.js',
   test: 'test/**/*.test.js',
   scripts: 'assets/scripts/**/*.js',
+  modules: 'assets/scripts/modules/*js',
   styles: 'assets/styles/*.scss',
   images: 'assets/images/**/*',
   fonts: 'assets/fonts/**/*'
@@ -72,9 +76,25 @@ gulp.task('styles', () => {
     .pipe($.size({title: 'styles', showFiles: true}));
 });
 
+gulp.task('modules', function () {
+  let commonPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
+  return gulp.src(SRC.modules)
+    .pipe(named())
+    .pipe(gulpWwebpack({
+      module: {
+        loaders: [{ test: /\.js$/, loader: 'babel-loader' }]
+      },
+      plugins: [commonPlugin]
+    }, webpack))
+    .pipe($.uglify({preserveComments: 'some'}))
+    .pipe(gulp.dest(DIST.scripts))
+    .pipe($.size({title: 'modules', showFiles: true}));
+});
+
 gulp.task('watch', () => {
   // Watch files for changes & reload
   gulp.watch([SRC.styles], ['styles']);
+  gulp.watch([SRC.modules], ['modules']);
   gulp.watch([SRC.fonts], ['fonts']);
   gulp.watch([SRC.images], ['images']);
 });
@@ -82,7 +102,7 @@ gulp.task('watch', () => {
 gulp.task('default', cb => {
   runSequence(
     'clean',
-    ['styles', 'images', 'fonts'],
+    ['styles', 'modules', 'images', 'fonts'],
     ['lint', 'watch'],
     cb
   );
