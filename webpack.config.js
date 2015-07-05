@@ -16,7 +16,8 @@ const resolverPlugin = new webpack.ResolverPlugin(
 let modules = {
   quiet: false,
   resolve: {
-   root: [bowerComponentsPath, scriptsPath]
+    extensions: ['', '.js', '.json'],
+    root: [bowerComponentsPath, scriptsPath]
   },
   output: {
     filename: `modules/[name].js`
