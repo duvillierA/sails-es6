@@ -20,8 +20,8 @@ const SRC = {
   api: 'api/**/*.js',
   tasks: 'task/**/*.js',
   config: 'config/**/*.js',
-  test_bootstrap: 'test/bootstrap.test.js',
-  test_unit: 'test/unit/**/*.test.js',
+  testBootstrap: 'test/bootstrap.test.js',
+  testUnit: 'test/unit/**/*.test.js',
   scripts: 'assets/scripts/**/*.js',
   modules: 'assets/scripts/modules/*js',
   styles: 'assets/styles/*.scss',
@@ -87,7 +87,7 @@ gulp.task('modules', () => {
 });
 
 gulp.task('test', () => {
-  return gulp.src([SRC.test_bootstrap, SRC.test_unit], {read: false})
+  return gulp.src([SRC.testBootstrap, SRC.testUnit], {read: false})
     .pipe($.mocha({
       timeout: 2000,
       reporter: 'dot',
@@ -95,9 +95,8 @@ gulp.task('test', () => {
       globals: ['*']
     }))
     .once('error', err => {
-      console.log(err);
-      process.exit(1);
-    })
+      throw err;
+    });
 });
 
 gulp.task('watch', () => {
