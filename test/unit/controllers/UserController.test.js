@@ -1,8 +1,7 @@
 import {expect} from 'chai';
-import url from 'url';
+import path from 'path';
 
-const path = url.resolve('../../../', 'api/controllers/UserController.js');
-var UserController = require(path);
+var UserController = require(path.join('../../../', 'api/controllers/UserController.js'));
 var {find, findOne, create, update, destroy} = UserController;
 
 describe.only('UserController', () => {

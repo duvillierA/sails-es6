@@ -4,6 +4,9 @@ import Sails from 'sails';
 before(done => {
   // Lift Sails with test database
   Sails.lift({
+    hooks: {
+      grunt: false
+    },
     log: {
       level: 'error'
     },

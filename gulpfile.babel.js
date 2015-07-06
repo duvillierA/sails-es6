@@ -20,7 +20,8 @@ const SRC = {
   api: 'api/**/*.js',
   tasks: 'task/**/*.js',
   config: 'config/**/*.js',
-  test: 'test/**/*.test.js',
+  test_bootstrap: 'test/bootstrap.test.js',
+  test_unit: 'test/unit/**/*.test.js',
   scripts: 'assets/scripts/**/*.js',
   modules: 'assets/scripts/modules/*js',
   styles: 'assets/styles/*.scss',
@@ -77,12 +78,26 @@ gulp.task('styles', () => {
     .pipe($.size({title: 'styles', showFiles: true}));
 });
 
-gulp.task('modules', function () {
+gulp.task('modules', () => {
   return gulp.src(SRC.modules)
     .pipe(named())
     .pipe(gulpWwebpack(webpackModulesConfig, webpack))
     .pipe(gulp.dest(DIST.scripts))
     .pipe($.size({title: 'modules', showFiles: true}));
+});
+
+gulp.task('test', () => {
+  return gulp.src([SRC.test_bootstrap, SRC.test_unit], {read: false})
+    .pipe($.mocha({
+      timeout: 2000,
+      reporter: 'dot',
+      bail: true,
+      globals: ['*']
+    }))
+    .once('error', err => {
+      console.log(err);
+      process.exit(1);
+    })
 });
 
 gulp.task('watch', () => {
@@ -96,8 +111,11 @@ gulp.task('watch', () => {
 gulp.task('default', cb => {
   runSequence(
     'clean',
-    ['styles', 'modules', 'images', 'fonts'],
-    ['lint', 'watch'],
+    'styles',
+    ['modules', 'images', 'fonts'],
+    'watch',
+    'lint',
+    'test',
     cb
   );
 });
