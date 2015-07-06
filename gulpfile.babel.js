@@ -93,10 +93,7 @@ gulp.task('test', () => {
       reporter: 'dot',
       bail: true,
       globals: ['*']
-    }))
-    .once('error', err => {
-      throw err;
-    });
+    }));
 });
 
 gulp.task('watch', () => {
